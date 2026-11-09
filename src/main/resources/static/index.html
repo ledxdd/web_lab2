@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа 2</title>
+    <style>
+        body {
+            margin: 0;
+            color: #222;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            display: block;
+            padding: 10px;
+            color: #222;
+            font-family: serif;
+            font-size: 20px;
+            background: #eee;
+        }
+
+        .student-info h1,
+        .student-info p {
+            margin: 5px 0;
+        }
+
+        .student-info h1::first-letter {
+            color: #000;
+        }
+
+        main {
+            display: block;
+            margin: 20px;
+        }
+
+        .workspace {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .panel {
+            display: block;
+            flex: 1 1 400px;
+        }
+
+        .results-panel {
+            flex-basis: 100%;
+        }
+
+        fieldset {
+            margin: 0 0 12px;
+            padding: 0;
+            border: 0;
+        }
+
+        input[type="text"] {
+            width: 200px;
+            padding: 6px;
+            color: inherit;
+            font: inherit;
+        }
+
+        input[aria-invalid="true"] {
+            border-color: red;
+        }
+
+        button {
+            margin: 5px;
+            padding: 6px 10px;
+            background: #eee;
+        }
+
+        button[aria-pressed="true"] {
+            background: #bbb;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+        }
+
+        .message {
+            min-height: 20px;
+        }
+
+        .message[data-kind="error"] {
+            color: red;
+        }
+
+        .message[data-kind="success"] {
+            color: green;
+        }
+
+        canvas {
+            display: block;
+            width: 460px;
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #999;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 6px;
+            border: 1px solid #777;
+            text-align: center;
+        }
+    </style>
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="student-info">
+            <h1>Лабораторная работа 2</h1>
+            <p>Козлов Владислав Петрович</p>
+            <p>Группа Р3207</p>
+            <p>Вариант 70455</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="workspace">
+            <section class="panel">
+                <h2>Проверка точки:</h2>
+                <form id="point-form" method="post" action="/check">
+                    <fieldset>
+                        <legend>Координата X</legend>
+                        <button type="button" data-x="-5" aria-pressed="false">-5</button>
+                        <button type="button" data-x="-4" aria-pressed="false">-4</button>
+                        <button type="button" data-x="-3" aria-pressed="false">-3</button>
+                        <button type="button" data-x="-2" aria-pressed="false">-2</button>
+                        <button type="button" data-x="-1" aria-pressed="false">-1</button>
+                        <button type="button" data-x="0" aria-pressed="false">0</button>
+                        <button type="button" data-x="1" aria-pressed="false">1</button>
+                        <button type="button" data-x="2" aria-pressed="false">2</button>
+                        <button type="button" data-x="3" aria-pressed="false">3</button>
+                        <input id="x-value" name="x" type="hidden">
+                    </fieldset>
+                    <fieldset>
+                        <label for="y-value">Координата Y (−5 &lt; Y &lt; 3)</label>
+                        <input id="y-value" name="y" type="text" inputmode="decimal" autocomplete="off">
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Радиус R</legend>
+                        <button type="button" data-r="1" aria-pressed="false">1</button>
+                        <button type="button" data-r="1.5" aria-pressed="false">1.5</button>
+                        <button type="button" data-r="2" aria-pressed="false">2</button>
+                        <button type="button" data-r="2.5" aria-pressed="false">2.5</button>
+                        <button type="button" data-r="3" aria-pressed="false">3</button>
+                        <input id="r-value" name="r" type="hidden">
+                    </fieldset>
+
+                    <button type="submit">Проверить точку</button>
+                    <button id="clear-history" type="button">Очистить историю</button>
+                    <p class="message" id="form-message" role="status"></p>
+                </form>
+            </section>
+
+            <section class="panel">
+                <h2>Координатная область:</h2>
+                <canvas id="area-canvas" width="460" height="460">Канвас</canvas>
+            </section>
+
+            <section class="panel results-panel">
+                <h2>История проверок:</h2>
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th>X</th>
+                            <th>Y</th>
+                            <th>R</th>
+                            <th>Результат</th>
+                            <th>Время сервера</th>
+                            <th>Обработка, мс</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
